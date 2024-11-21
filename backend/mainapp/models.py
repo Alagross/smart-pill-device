@@ -54,3 +54,26 @@ class SpotifyWrapHistory(models.Model):
 
     def __str__(self):
         return f"{self.user_profile.spotify_display_name}'s Wrap - {self.year}"
+
+class Follow(models.Model):
+    follower = models.ForeignKey(UserProfile, related_name='following', on_delete=models.CASCADE)
+    following = models.ForeignKey(UserProfile, related_name='followers', on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('follower', 'following')
+
+    def __str__(self):
+        return f"{self.follower.spotify_display_name} follows {self.following.spotify_display_name}"
+
+class SpotifyWrap(models.Model):
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='wraps')
+    is_public = models.BooleanField(default=True)
+    likes = models.ManyToManyField(User, related_name='liked_wraps', blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.title} by {self.author.username}"

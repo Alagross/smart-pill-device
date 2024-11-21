@@ -7,10 +7,15 @@ from .views.api import (  # Explicitly import all api views
     get_personality_analysis,
     create_spotify_wrap,
     get_user_wraps,
-    get_wrap_detail
+    get_wrap_detail,
+    create_wrap,
+    list_wraps,
+    like_wrap,
+    follow_user,
 )
 from .views.auth import register, sign_in, sign_out
 from .views import api, testapi
+from .views.contact_views import ContactFormView
 
 # Debug print
 print("\nRegistered API Views:")
@@ -27,7 +32,10 @@ api_urlpatterns = [
     path('api/wraps/create/', create_spotify_wrap, name='create_wrap'),
     path('api/wraps/', get_user_wraps, name='get_wraps'),
     path('api/wraps/<int:wrap_id>/', get_wrap_detail, name='get_wrap_detail'),
-
+    path('api/wraps/', create_wrap, name='create_wrap'),
+    path('api/wraps/list/', list_wraps, name='list_wraps'),
+    path('api/wraps/<int:wrap_id>/like/', like_wrap, name='like_wrap'),
+    path('api/users/<int:user_id>/follow/', follow_user, name='follow_user'),
 ]
 
 # Traditional template view patterns
@@ -35,6 +43,7 @@ template_urlpatterns = [
     path('register/', register, name='register'),
     path('login/', sign_in, name='sign_in'),
     path('logout/', sign_out, name='sign_out'),
+    path('contact/', ContactFormView.as_view(), name='contact-form'),
 ]
 
 # Debug print registered URLs

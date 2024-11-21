@@ -1,8 +1,7 @@
 from django.contrib.auth.models import User
 from django.utils import timezone
 from datetime import timedelta
-from django.shortcuts import redirect
-from ..models import UserProfile, SpotifyWrapHistory
+from django.shortcuts import redirect, get_object_or_404
 from django.contrib.auth import login
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -11,11 +10,12 @@ from rest_framework import status
 from rest_framework.authentication import SessionAuthentication
 import secrets
 import logging
-import json
-from ..utils.spotify import SpotifyAPI
-import google.generativeai as genai
 import os
 from dotenv import load_dotenv
+from ..models import UserProfile, SpotifyWrapHistory, SpotifyWrap, Follow
+from ..utils.spotify import SpotifyAPI
+from ..serializers import SpotifyWrapSerializer
+import google.generativeai as genai
 load_dotenv()
 
 logger = logging.getLogger(__name__)
@@ -618,4 +618,45 @@ def refresh_spotify_data(request):
         }, status=status.HTTP_404_NOT_FOUND)
 
 
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def create_wrap(request):
+    serializer = SpotifyWrapSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save(author=request.user)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def list_wraps(request):
+    filter_by = request.query_params.get('filter', 'public')
+    if filter_by == 'liked':
+        wraps = request.user.liked_wraps.all()
+    elif filter_by == 'following':
+        followed_users = request.user.following.values_list('following', flat=True)
+        wraps = SpotifyWrap.objects.filter(author__id__in=followed_users, is_public=True)
+    else:
+        wraps = SpotifyWrap.objects.filter(is_public=True)
+    serializer = SpotifyWrapSerializer(wraps, many=True)
+    return Response(serializer.data)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def like_wrap(request, wrap_id):
+    wrap = get_object_or_404(SpotifyWrap, id=wrap_id)
+    if request.user in wrap.likes.all():
+        wrap.likes.remove(request.user)
+        return Response({"message": "Wrap unliked."}, status=status.HTTP_200_OK)
+    wrap.likes.add(request.user)
+    return Response({"message": "Wrap liked."}, status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def follow_user(request, user_id):
+    following_user = get_object_or_404(User, id=user_id)
+    if request.user.following.filter(following=following_user).exists():
+        request.user.following.filter(following=following_user).delete()
+        return Response({"message": "Unfollowed user."}, status=status.HTTP_200_OK)
+    Follow.objects.create(follower=request.user, following=following_user)
+    return Response({"message": "Followed user."}, status=status.HTTP_200_OK)

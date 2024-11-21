@@ -1,7 +1,7 @@
 # mainapp/serializers.py
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import UserProfile, SpotifyWrapHistory
+from .models import UserProfile, SpotifyWrapHistory, Follow, SpotifyWrap
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -40,3 +40,22 @@ class SpotifyWrapHistorySerializer(serializers.ModelSerializer):
         model = SpotifyWrapHistory
         fields = ('id', 'created_at', 'wrap_data', 'year')
 
+class ContactFormSerializer(serializers.Serializer):
+    name = serializers.CharField(max_length=100)
+    email = serializers.EmailField()
+    message = serializers.CharField(max_length=1000)
+class SpotifyWrapSerializer(serializers.ModelSerializer):
+    author = serializers.StringRelatedField()  # Display author's username
+    likes_count = serializers.IntegerField(source='likes.count', read_only=True)
+
+    class Meta:
+        model = SpotifyWrap
+        fields = ('id', 'title', 'description', 'author', 'is_public', 'likes_count', 'created_at', 'updated_at')
+
+class FollowSerializer(serializers.ModelSerializer):
+    follower = serializers.StringRelatedField()
+    following = serializers.StringRelatedField()
+
+    class Meta:
+        model = Follow
+        fields = ('id', 'follower', 'following', 'created_at')
