@@ -1,4 +1,13 @@
 
+
+/*
+password: the password to be inserted;
+count: the number of containers;
+*/
+let password; 
+let count;
+
+
 /* Creating a container object with the following properties:
     - medication: the type of medication
     - time: what time (hour and minutes)
@@ -6,9 +15,9 @@
     - quanity: how much medication is in the container
     - lock: if true, the lock is enable. if false, disabled
     - empty: if quantity = 0, then true;
+    - per: how much medication is meant to be taken at once (two pills a day)
 */ 
-let password; 
-function container(medication, time, day, quantity, lock) {
+function container(medication, time, day, quantity, lock, per) {
     this.medication = medication;
     this.time = time;
     this.day = day;
@@ -19,6 +28,7 @@ function container(medication, time, day, quantity, lock) {
     } else {
         this.empty = true;
     }
+    this.per = per;
     /* Creating a function to refill containers.
         - quantity: the amount of medication refilling in the container
     */
@@ -26,8 +36,13 @@ function container(medication, time, day, quantity, lock) {
         if (!this.lock) {
             this.quantity += quantity;
         }
+        if (!check) {
+            alert();
+        }
         return;
     }
+    /* Using this function to check the time at a given time.
+    */
     function checkTime() {
         const time = new Date()
         const currentTime = time.getHours() + ":" + now.getMinutes().toString().padStart(2, '0');
@@ -36,19 +51,43 @@ function container(medication, time, day, quantity, lock) {
         } else {
             this.lock = true;
         }
+        return;
     }
+    /* Using a special function to indicate taking medication.
+    */
     function takeMedication() {
         if (!this.lock) {
-            this.quantity += quantity;
+            if (check()) {
+                this.quantity -= this.per;
+            } else {
+                alert();
+            }
         }
         return;
     }
-    return;
+    /* Function to unlock the container.
+        - input: the passsword inputed into the container
+    */
     function unlock(input) {
         if (input == password) {
             this.lock = false;
         } else {
             this.lock = true;
         }
+        return;
+    }
+    /* Function to check the current quantity of medication in the container.
+    */
+    function check() {
+        if (this.quantity >= this.per) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    /* Function to alert the user that they are low on medication.
+    */
+    function alert() {
+        //TODO: Find some way to alert the user that they're low on pills.
     }
 }
