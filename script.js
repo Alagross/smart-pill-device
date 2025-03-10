@@ -91,3 +91,22 @@ function container(medication, time, day, quantity, lock, per) {
         //TODO: Find some way to alert the user that they're low on pills.
     }
 }
+
+
+document.getElementById('adding').addEventListener('click', function () {
+    generateContainer();
+});
+
+function generateContainer() {
+    const newItem = document.createElement('div');
+    newItem.classList.add('container');
+    newItem.classList.add('box');
+    newItem.textContent = 'Test';
+    document.getElementById('containers').appendChild(newItem);
+
+    const newButton = document.createElement('button');
+    newButton.textContent = 'UNLOCK';
+
+    newItem.appendChild(newButton);
+    
+}

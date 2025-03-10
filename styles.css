@@ -8,9 +8,29 @@
     border: 3px solid green;
     padding: 10px;
     margin: 10px;
+    background-color: palegreen;
 }
 
-.containers {
+#containers {
     display: flex;
     justify-content: center;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: vertical;
+}
+
+h1 {
+    text-align: center;
+}
+
+.background {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+html {
+    background-color: lightblue;
 }
