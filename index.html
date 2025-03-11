@@ -8,24 +8,39 @@
 <body>
     <div class="background">
         <h1> Your Smart Pill Device! </h1>
-        <div>
-            <button id="adding"> ADD CONTAINER</button>
-        </div>
+        <div><label for="container-data">Enter container information:</label>
+            <input type="text" class="container-data" id="name" placeholder="Container name">
+            <label for="time">Time (24-hour format):</label>
+            <input type="time" id="time"><br>
+            
+            <label>Select days of the week:</label><br>
+            <input type="checkbox" id="monday" value="Monday"> Monday<br>
+            <input type="checkbox" id="tuesday" value="Tuesday"> Tuesday<br>
+            <input type="checkbox" id="wednesday" value="Wednesday"> Wednesday<br>
+            <input type="checkbox" id="thursday" value="Thursday"> Thursday<br>
+            <input type="checkbox" id="friday" value="Friday"> Friday<br>
+            <input type="checkbox" id="saturday" value="Saturday"> Saturday<br>
+            <input type="checkbox" id="sunday" value="Sunday"> Sunday<br>
+            
+            <label for="quantity">Quantity:</label>
+            <input type="number" id="quantity" placeholder="How many pills?"><br>
+            
+            <label for="numberToTake">Number to Take:</label>
+            <input type="number" id="numberToTake" placeholder="How many to take?"><br>
+            
+            <button id="adding">ADD CONTAINER</button>
+            
             <div id = "containers">
-                <div class="container box">
-                    <div>
-                        <button>
-                            test
-                        </button>
-                    </div>
-                    <div class="container box">
-                        Ibuprofen
-                        <button> UNLOCK</button>
-                    </div>
+                <!-- <div class="container box">
+                    Ibuprofen
+                    <button> UNLOCK</button>
+                    <button> DELETE</button>
                 </div>
-            <div class="container box">Melatonin
-                <button> UNLOCK</button>
-            </div>
+                <div class="container box">
+                    Melatonin
+                    <button> UNLOCK</button>
+                    <button> DELETE</button>
+                </div> -->
         </div>
     </div>
     <script lang="javascript" type="text/javascript" src="script.js"></script>
