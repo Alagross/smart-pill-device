@@ -12,6 +12,7 @@ from rest_framework.authentication import SessionAuthentication
 import secrets
 import logging
 import json
+from django.views.decorators.csrf import csrf_exempt
 from ..utils.spotify import SpotifyAPI
 import google.generativeai as genai
 from django.shortcuts import get_object_or_404
@@ -27,6 +28,40 @@ logger = logging.getLogger(__name__)
 # Store state in memory (for testing only - should use session/cache in production)
 STATE_STORE = {}
 
+@csrf_exempt
+@api_view(['POST'])
+@permission_classes([AllowAny])  # Changed from IsAuthenticated
+def chat_with_gemini(request):
+    """
+    Accepts a JSON body with a "prompt" field. Returns a "reply" field containing
+    the AI-generated response.
+    """
+    try:
+        user_prompt = request.data.get('prompt', '').strip()
+        if not user_prompt:
+            return Response(
+                {'error': 'No prompt text provided.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        # Configure Gemini
+        genai.configure(api_key=os.getenv('GEMINI_API_KEY'))
+        model = genai.GenerativeModel('gemini-1.5-flash-002')
+        
+        # Generate response
+        response = model.generate_content(user_prompt)
+        
+        return Response({
+            'reply': response.text
+        }, status=status.HTTP_200_OK)
+    
+    except Exception as e:
+        logger.error(f"Error in chat_with_gemini: {str(e)}")
+        return Response(
+            {'error': str(e)},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
+
 
 @api_view(['GET'])
 @authentication_classes([SessionAuthentication])
@@ -37,7 +72,7 @@ def get_personality_analysis(request):
         
         # Configure Gemini
         genai.configure(api_key=os.getenv('GEMINI_API_KEY'))
-        model = genai.GenerativeModel('gemini-pro')
+        model = genai.GenerativeModel('gemini-1.5-flash-002')
         
         # Prepare the data for Gemini
         music_data = {

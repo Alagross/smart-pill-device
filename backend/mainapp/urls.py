@@ -15,7 +15,8 @@ from .views.api import (  # Explicitly import all api views
     toggle_like,
     contact_form,
     delete_account,
-    logout_user
+    logout_user,
+    chat_with_gemini,
 )
 from .views.auth import register, sign_in, sign_out
 from .views import api, testapi
@@ -46,6 +47,7 @@ api_urlpatterns = [
     path('api/contact/', contact_form, name='contact_form'),
     path('api/delete-account', delete_account, name='delete-account'),
     path('api/logout/', logout_user, name='logout-user'),
+    path('api/chat_with_gemini/', chat_with_gemini, name='chat_with_gemini'),
 
 ]
 

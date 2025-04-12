@@ -191,14 +191,12 @@ const Layout = ({ children }) => {
                                 color: colors.accent,
                                 transition: 'color 0.3s ease'
                             }}>
-                                Spotify Wrapped
+                                Medicine Box
                             </Link>
                             <nav style={{ marginLeft: '40px' }}>
-                                <Link to="/personality" style={navLinkStyle}>Personality</Link>
-                                <Link to="/wrap" style={navLinkStyle}>Your Wrap</Link>
-                                <Link to="/savedwraps" style={navLinkStyle}>Saved Wraps</Link>
-                                <Link to="/publicwraps" style={navLinkStyle}>View Other Wraps</Link>
-                                <Link to="/contact" style={navLinkStyle}>Contact</Link>
+                                <Link to="/yourmedications" style={navLinkStyle}>Your Medications</Link> {/* publicwraps */}
+                                <Link to="/aichat" style={navLinkStyle}>AI Chat</Link>  {/* personality */}
+                                <Link to="/contact" style={navLinkStyle}>Contact Your Pharmacist</Link> 
                                 <Link to="/deleteaccount" style={navLinkStyle}>Account</Link>
                             </nav>
                         </div>
@@ -212,22 +210,13 @@ const Layout = ({ children }) => {
                                 <span></span>
                                 Dark Mode
                             </label>
-                            <label>
-                                <input 
-                                    type="checkbox"
-                                    checked={isHarrisonFordMode}
-                                    onChange={handleHarrisonFordToggle}
-                                />
-                                <span></span>
-                                Harrison Ford Theme
-                            </label>
                         </div>
                     </div>
                 </header>
 
                 {/* Main Content */}
                 <main style={{ 
-                    paddingTop: '120px',
+                    paddingTop: '60px',
                     backgroundColor: colors.overlayBg,
                     minHeight: '100vh',
                     position: 'relative',
@@ -235,46 +224,6 @@ const Layout = ({ children }) => {
                 }}>
                     {children}
                 </main>
-
-                {/* Footer with theme-matching background */}
-                <footer style={{
-                    backgroundColor: 'linear-gradient(to right, #40916c, #1B4332)',
-                    color: colors.textPrimary,
-                    padding: '20px',
-                    textAlign: 'center',
-                    transition: 'background-color 0.3s ease'
-                }}>
-                    <section id="share">
-                    <h2 style={{ fontFamily: "'Quicksand', sans-serif", fontSize: '2.5rem', fontWeight: '600', letterSpacing: '-0.02em' }}>Share Your Wrapped</h2>
-
-                        <div style={{ marginTop: '20px', marginBottom: '20px' }}>
-                            {/* Twitter */}
-                            <svg viewBox="0 0 24 24" style={iconStyle} onClick={() => window.open('#', '_blank')}>
-                                <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/>
-                            </svg>
-
-                            {/* LinkedIn */}
-                            <svg viewBox="0 0 24 24" style={iconStyle} onClick={() => window.open('#', '_blank')}>
-                                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
-                                <rect x="2" y="9" width="4" height="12"/>
-                                <circle cx="4" cy="4" r="2"/>
-                            </svg>
-
-                            {/* Facebook */}
-                            <svg viewBox="0 0 24 24" style={iconStyle} onClick={() => window.open('#', '_blank')}>
-                                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
-                            </svg>
-
-                            {/* Instagram */}
-                            <svg viewBox="0 0 24 24" style={iconStyle} onClick={() => window.open('#', '_blank')}>
-                                <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"/>
-                                <path d="M12 6a6 6 0 1 0 6 6 6 6 0 0 0-6-6zm0 10a4 4 0 1 1 4-4 4 4 0 0 1-4 4z"/>
-                                <circle cx="18.5" cy="5.5" r="1.5"/>
-                            </svg>
-                        </div>
-                    </section>
-                    <p>&copy; 2024 Spotify Wrapped</p>
-                </footer>
 
                 {/* Harrison Ford Image */}
                 {isHarrisonFordMode && (

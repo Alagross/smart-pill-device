@@ -140,87 +140,13 @@ export default function Dashboard() {
         return () => styleSheet.remove();
     }, []);
 
-    if (loading) {
-        return (
-            <Layout>
-                <div
-                    style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        minHeight: 'calc(100vh - 120px)',
-                    }}
-                >
-                    <div
-                        style={{
-                            width: '50px',
-                            height: '50px',
-                            border: `3px solid ${themeColors.accent}`,
-                            borderTopColor: 'transparent',
-                            borderRadius: '50%',
-                            animation: 'spin 1s linear infinite',
-                        }}
-                    />
-                </div>
-            </Layout>
-        );
-    }
-
-
-    if (error) {
-        return (
-            <Layout>
-                <div
-                    style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        minHeight: 'calc(100vh - 120px)',
-                    }}
-                >
-                    <div
-                        style={{
-                            backgroundColor: themeColors.background,
-                            padding: '20px',
-                            borderRadius: '12px',
-                            color: themeColors.textPrimary,
-                            textAlign: 'center',
-                            boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.25)',
-                        }}
-                    >
-                        <p style={{ color: '#FF4444', marginBottom: '20px' }}>{error}</p>
-                        <button
-                            onClick={() => window.location.href = '/'}
-                            style={{
-                                fontFamily: "'Quicksand', sans-serif",
-                                fontSize: '16px',
-                                backgroundColor: themeColors.buttonBg,
-                                color: themeColors.buttonText,
-                                border: 'none',
-                                padding: '10px 20px',
-                                borderRadius: '20px',
-                                cursor: 'pointer',
-                                transition: 'transform 0.2s, opacity 0.2s',
-                                fontWeight: '600',
-                                letterSpacing: '0.5px',
-                                boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.2)',
-                            }}
-                        >
-                            Reconnect to Spotify
-                        </button>
-                    </div>
-                </div>
-            </Layout>
-        );
-    }
-
     return (
         <Layout>
             <div style={{ 
                 width: '100%',
                 maxWidth: '1200px',
                 margin: '0 auto',
-                padding: '20px',
+                padding: '10px',
                 boxSizing: 'border-box'
             }}>
                 <section
@@ -229,7 +155,6 @@ export default function Dashboard() {
                         padding: '20px',
                         borderRadius: '12px',
                         marginBottom: '20px',
-                        color: themeColors.textPrimary,
                         boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.25)',
                     }}
                 >
@@ -243,97 +168,28 @@ export default function Dashboard() {
                             marginTop: 0,
                         }}
                     >
-                        {userData?.spotify_profile?.display_name}'s Stats
-                    </h2>
-                    <button
-                        onClick={handleRefreshData}
-                        disabled={refreshing}
-                        style={{
-                            backgroundColor: themeColors.buttonBg,
-                            color: themeColors.buttonText,
-                            border: 'none',
-                            padding: '10px 20px',
-                            borderRadius: '20px',
-                            cursor: refreshing ? 'not-allowed' : 'pointer',
-                            opacity: refreshing ? 0.7 : 1,
-                            transition: 'all 0.3s ease',
-                            boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.2)',
-                            fontFamily: "'Quicksand', sans-serif",
-                            fontSize: '16px',
-                            fontWeight: '600',
-                            letterSpacing: '0.5px',
-                        }}
-                    >
-                        {refreshing ? 'Refreshing...' : 'Refresh Data'}
-                    </button>
-
-                    <div
-                        style={{
-                            display: 'grid',
-                            gridTemplateColumns: 'repeat(4, 1fr)',
-                            gap: '20px',
-                            marginTop: '20px',
-                        }}
-                    >
-                        {[
-                            { label: 'Saved Tracks', value: userData?.spotify_data?.saved_tracks_count },
-                            { label: 'Saved Albums', value: userData?.spotify_data?.saved_albums_count },
-                            { label: 'Playlists', value: userData?.spotify_data?.playlist_count },
-                            { label: 'Following', value: userData?.spotify_data?.favorite_artists_count },
-                        ].map((item, index) => (
-                            <div key={index} style={{ textAlign: 'center' }}>
-                                <h3
-                                    style={{
-                                        fontFamily: "'Quicksand', sans-serif",
-                                        fontWeight: '600',
-                                        fontSize: '18px',
-                                        color: themeColors.accentSecondary,
-                                        marginTop: 0,
-                                    }}
-                                >
-                                    {item.label}
-                                </h3>
-                                <p
-                                    style={{
-                                        fontFamily: "'Quicksand', sans-serif",
-                                        fontWeight: 'bold',
-                                        fontSize: '24px',
-                                        margin: '10px 0',
-                                        color: themeColors.textPrimary,
-                                    }}
-                                >
-                                    {item.value || 0}
-                                </p>
-                            </div>
-                        ))}
-                    </div>
-                </section>
-
-                <section
-                    style={{
-                        backgroundColor: themeColors.containerBg,
-                        padding: '20px',
-                        borderRadius: '12px',
-                        marginBottom: '20px',
-                        boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.25)',
-                    }}
-                >
-                    <h2
-                        style={{
-                            fontFamily: "'Quicksand', sans-serif",
-                            fontSize: '2rem',
-                            fontWeight: '600',
-                            letterSpacing: '-0.02em',
-                            color: themeColors.accent,
-                            marginTop: 0,
-                        }}
-                    >
-                        Top Artists
+                        Medication Alerts
                     </h2>
                     <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-                        {userData?.spotify_data?.top_artists?.items?.slice(0, 5).map((artist, index) => (
+                        {[
+                            {
+                                id: 1,
+                                name: 'Oxycodone',
+                                alert: '5 left, refill soon'
+                            },
+                            {
+                                id: 2,
+                                name: 'Albuterol',
+                                alert: 'Will expire in 2 weeks'
+                            },
+                            {
+                                id: 3,
+                                name: 'Tylenol',
+                                alert: 'Alert: tylenol may interact with with oxycodone. Please consult your doctor.'
+                            }
+                        ].map((med, index) => (
                             <li
-                                key={artist.id}
+                                key={med.id}
                                 style={{
                                     marginBottom: '15px',
                                     borderBottom: `1px solid ${themeColors.borderColor}`,
@@ -359,119 +215,12 @@ export default function Dashboard() {
                                             color: themeColors.textPrimary,
                                         }}
                                     >
-                                        {artist.name}
+                                        {med.name}
                                     </div>
-                                    {artist.genres?.length > 0 && (
-                                        <div style={{ fontSize: '14px', color: themeColors.textSecondary }}>
-                                            {artist.genres.slice(0, 2).join(', ')}
-                                        </div>
-                                    )}
-                                </div>
-                            </li>
-                        ))}
-                    </ul>
-                </section>
-
-                <section
-                    style={{
-                        backgroundColor: themeColors.containerBg,
-                        padding: '20px',
-                        borderRadius: '12px',
-                        marginBottom: '20px',
-                        boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.25)',
-                    }}
-                >
-                    <div style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                        marginBottom: '20px'
-                    }}>
-                        <h2
-                            style={{
-                                fontFamily: "'Quicksand', sans-serif",
-                                fontSize: '2rem',
-                                fontWeight: '600',
-                                letterSpacing: '-0.02em',
-                                color: themeColors.accent,
-                                margin: 0,
-                            }}
-                        >
-                            Recently Played
-                        </h2>
-                        <button
-                            onClick={toggleMute}
-                            style={{
-                                backgroundColor: 'transparent',
-                                border: 'none',
-                                cursor: 'pointer',
-                                color: '#1DB954',
-                                display: 'flex',
-                                alignItems: 'center',
-                                padding: '8px',
-                                fontSize: '20px'
-                            }}
-                        >
-                            {isMuted ? '🔇' : '🔊'}
-                        </button>
-                    </div>
-                    <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-                        {userData?.spotify_data?.recently_played?.items?.slice(0, 5).map((item) => (
-                            <li 
-                                key={`${item.track.id}-${item.played_at}`} 
-                                style={{
-                                    marginBottom: '15px',
-                                    borderBottom: `1px solid ${themeColors.borderColor}`,
-                                    paddingBottom: '15px',
-                                    display: 'flex',
-                                    justifyContent: 'space-between',
-                                    alignItems: 'center'
-                                }}
-                            >
-                                <div style={{ flex: 1 }}>
-                                    <div style={{ 
-                                        fontWeight: 'bold', 
-                                        fontSize: '16px',
-                                        color: themeColors.textPrimary
-                                    }}>
-                                        {item.track.name}
-                                    </div>
-                                    <div style={{ 
-                                        color: themeColors.textSecondary,
-                                        fontSize: '14px'
-                                    }}>
-                                        by {item.track.artists.map(a => a.name).join(', ')}
-                                    </div>
-                                    <div style={{ 
-                                        color: themeColors.textTertiary,
-                                        fontSize: '12px',
-                                        marginTop: '5px'
-                                    }}>
-                                        {new Date(item.played_at).toLocaleString()}
+                                    <div style={{ fontSize: '14px', color: themeColors.textSecondary }}>
+                                        {med.alert}
                                     </div>
                                 </div>
-                                {item.track.preview_url && (
-                                    <button
-                                        onClick={() => handlePlayPreview(item.track.preview_url, item.track.id)}
-                                        style={{
-                                            backgroundColor: currentlyPlaying === item.track.id ? '#1DB954' : 'transparent',
-                                            border: `1px solid ${currentlyPlaying === item.track.id ? '#1DB954' : '#666'}`,
-                                            borderRadius: '50%',
-                                            width: '40px',
-                                            height: '40px',
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            justifyContent: 'center',
-                                            cursor: 'pointer',
-                                            marginLeft: '15px',
-                                            color: currentlyPlaying === item.track.id ? 'white' : '#666',
-                                            transition: 'all 0.2s ease',
-                                            fontSize: '16px'
-                                        }}
-                                    >
-                                        {currentlyPlaying === item.track.id && !audio?.paused ? '⏸️' : '▶️'}
-                                    </button>
-                                )}
                             </li>
                         ))}
                     </ul>

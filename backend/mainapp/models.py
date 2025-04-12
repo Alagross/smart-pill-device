@@ -86,3 +86,21 @@ class WrapLike(models.Model):
         self.wrap.likes_count = self.wrap.likes_count - 1
         self.wrap.save()
         super().delete(*args, **kwargs)
+
+
+
+class Medication(models.Model):
+    user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    name = models.CharField(max_length=200)
+    dosage = models.CharField(max_length=100)
+    frequency = models.CharField(max_length=100)
+    start_date = models.DateField()
+    end_date = models.DateField(null=True, blank=True)
+    is_public = models.BooleanField(default=False)
+    likes_count = models.IntegerField(default=0)
+    side_effects = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+class MedicationLike(models.Model):
+    medication = models.ForeignKey(Medication, on_delete=models.CASCADE)
+    user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
